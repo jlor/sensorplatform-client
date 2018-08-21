@@ -60,9 +60,9 @@ public class CamelRouteBuilder extends RouteBuilder {
         //todo: implement me
 
         rest("/rest/")
-                .get("sensor/").to(REST_ALL_SENSORS_REQUEST_URI)
-                .get("sensor/{sensorType}").to(REST_SENSOR_TYPE_REQUEST_URI)
-                .get("sensor/{sensorType}/{sensorName}").to(REST_SPECIFIC_SENSOR_REQUEST_URI);
+                .get("sensors").to(REST_ALL_SENSORS_REQUEST_URI)
+                .get("sensors/{sensorType}").to(REST_SENSOR_TYPE_REQUEST_URI)
+                .get("sensors/{sensorType}/{sensorName}").to(REST_SPECIFIC_SENSOR_REQUEST_URI);
 
         from(REST_ALL_SENSORS_REQUEST_URI)
                 .bean(SensorService.class, "fetchSensorStatus(${exchange})");
