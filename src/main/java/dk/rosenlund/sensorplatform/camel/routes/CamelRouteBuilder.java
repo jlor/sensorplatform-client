@@ -3,6 +3,7 @@ package dk.rosenlund.sensorplatform.camel.routes;
 import dk.rosenlund.sensorplatform.camel.service.SensorService;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CamelRouteBuilder extends RouteBuilder {
+
+    @Value("${sensorplatform.api.path}")
+    String contextPath;
 
     private static final String REST_ALL_SENSORS_REQUEST_URI = "direct:restAllSensor";
     private static final String REST_SENSOR_TYPE_REQUEST_URI = "direct:restSensorType";
@@ -23,23 +27,26 @@ public class CamelRouteBuilder extends RouteBuilder {
     private static final String SENSOR_TRIGGER_ROUTE_ID = "sensorTriggerId";
     private static final String SENSOR_OUTPUT_ROUTE_ID = "sensorOutputId";
 
+    private static final String JSON_CONTENT_TYPE = "application/json";
+
     @Override
     public void configure() {
         getContext().setUseMDCLogging(true);
         getContext().setUseBreadcrumb(true);
 
         setupRest();
-        setupTimer();
+        setupTrigger();
         setupTriggerSubscribers();
     }
 
     private void setupRest() {
         restConfiguration()
-                .contextPath("/sensors")
+                .contextPath(contextPath)
+                .apiContextPath(contextPath)
+                .enableCORS(true)
                 .apiContextPath("/api-doc")
                 .apiProperty("api.title", "Sensor Platform client REST API")
-                .apiProperty("api.version", "1.0")
-                .apiProperty("cors", "true")
+                .apiProperty("api.version", "v1")
                 .apiContextRouteId("doc-api")
                 .component("servlet")
                 .bindingMode(RestBindingMode.json);
@@ -48,21 +55,24 @@ public class CamelRouteBuilder extends RouteBuilder {
     }
 
     private void setupRestEndpoints() {
-        rest("/rest/request/")
+        rest("/request/")
                 .get("/alive")
                 .route()
                 .setBody(constant("OK"))
-                .endRest()
-                .post()
-                .to("direct:handleAliveRequest");
+                .endRest();
 
-        from("direct:handleAliveRequest").log("Received request: ${body}");
         //todo: implement me
 
-        rest("/rest/")
-                .get("sensors").to(REST_ALL_SENSORS_REQUEST_URI)
-                .get("sensors/{sensorType}").to(REST_SENSOR_TYPE_REQUEST_URI)
-                .get("sensors/{sensorType}/{sensorName}").to(REST_SPECIFIC_SENSOR_REQUEST_URI);
+        rest()
+                .get("/sensors")
+                    .produces(JSON_CONTENT_TYPE)
+                    .to(REST_ALL_SENSORS_REQUEST_URI)
+                .get("/sensors/{sensorType}")
+                    .produces(JSON_CONTENT_TYPE)
+                    .to(REST_SENSOR_TYPE_REQUEST_URI)
+                .get("/sensors/{sensorType}/{sensorName}")
+                    .produces(JSON_CONTENT_TYPE)
+                    .to(REST_SPECIFIC_SENSOR_REQUEST_URI);
 
         from(REST_ALL_SENSORS_REQUEST_URI)
                 .bean(SensorService.class, "fetchSensorStatus(${exchange})");
@@ -72,7 +82,7 @@ public class CamelRouteBuilder extends RouteBuilder {
                 .bean(SensorService.class, "fetchSpecificSensor(${header.sensorType}, ${header.sensorName}, ${exchange})");
     }
 
-    private void setupTimer() {
+    private void setupTrigger() {
         from("timer:sensortrigger?period={{timer.period}}")
                 .routeId(SENSOR_TRIGGER_ROUTE_ID)
                 .log("Sensor status triggered")

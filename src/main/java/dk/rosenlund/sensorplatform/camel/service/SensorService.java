@@ -7,9 +7,7 @@ import dk.rosenlund.sensorplatform.model.SensorOutput;
 import org.apache.camel.Exchange;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +36,7 @@ public class SensorService {
                 .collect(Collectors.toList()));
     }
 
-    private List<SensorOutput> getSensorOutputList() {
+    public List<SensorOutput> getSensorOutputList() {
         List<SensorOutput> sensorMessages = new ArrayList<>();
 
         W1Master w1master = new W1Master();
