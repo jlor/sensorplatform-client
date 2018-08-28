@@ -6,6 +6,7 @@ import com.pi4j.temperature.TemperatureScale;
 import dk.rosenlund.sensorplatform.model.SensorOutput;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TemperatureService implements SensorService {
@@ -16,7 +17,7 @@ public class TemperatureService implements SensorService {
         W1Master w1master = new W1Master();
         // 1wire TemperatureSensors
         List<TemperatureSensor> temperatureSensors = w1master.getDevices(TemperatureSensor.class);
-        if (temperatureSensors.size() > 0) {
+        if (temperatureSensors.isEmpty()) {
             temperatureSensors.forEach(s -> sensorMessages.add(
                     new SensorOutput(
                             TemperatureSensor.class.getName(),
