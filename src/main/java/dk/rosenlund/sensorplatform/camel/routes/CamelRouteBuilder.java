@@ -1,6 +1,6 @@
 package dk.rosenlund.sensorplatform.camel.routes;
 
-import dk.rosenlund.sensorplatform.camel.service.SensorService;
+import dk.rosenlund.sensorplatform.camel.service.SensorStatusComponent;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.beans.factory.annotation.Value;
@@ -75,11 +75,11 @@ public class CamelRouteBuilder extends RouteBuilder {
                     .to(REST_SPECIFIC_SENSOR_REQUEST_URI);
 
         from(REST_ALL_SENSORS_REQUEST_URI)
-                .bean(SensorService.class, "fetchSensorStatus(${exchange})");
+                .bean(SensorStatusComponent.class, "fetchSensorStatus(${exchange})");
         from(REST_SENSOR_TYPE_REQUEST_URI)
-                .bean(SensorService.class, "fetchSensorType(${header.sensorType}, ${exchange})");
+                .bean(SensorStatusComponent.class, "fetchSensorType(${header.sensorType}, ${exchange})");
         from(REST_SPECIFIC_SENSOR_REQUEST_URI)
-                .bean(SensorService.class, "fetchSpecificSensor(${header.sensorType}, ${header.sensorName}, ${exchange})");
+                .bean(SensorStatusComponent.class, "fetchSpecificSensor(${header.sensorType}, ${header.sensorName}, ${exchange})");
     }
 
     private void setupTrigger() {
@@ -92,7 +92,7 @@ public class CamelRouteBuilder extends RouteBuilder {
     private void setupTriggerSubscribers() {
         from(SENSOR_TRIGGER_ROUTE_URI)
                 .routeId(SENSOR_OUTPUT_ROUTE_ID)
-                .bean(SensorService.class, "fetchSensorStatus(${exchange})")
+                .bean(SensorStatusComponent.class, "fetchSensorStatus(${exchange})")
                 .to(SENSOR_OUTPUT_ROUTE_URI);
     }
 

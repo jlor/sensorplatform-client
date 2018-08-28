@@ -1,15 +1,15 @@
 package dk.rosenlund.sensorplatform.camel.routes;
 
 import com.pi4j.component.temperature.TemperatureSensor;
-import dk.rosenlund.sensorplatform.camel.service.SensorService;
+import dk.rosenlund.sensorplatform.camel.sensors.TemperatureService;
 import dk.rosenlund.sensorplatform.model.SensorOutput;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -21,7 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -30,7 +31,7 @@ public class CamelRouteBuilderTest {
     String contextPath = "camel";
 
     @MockBean
-    SensorService sensorServiceMock;
+    TemperatureService temperatureServiceMock;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -50,36 +51,59 @@ public class CamelRouteBuilderTest {
                                                         new SensorOutput(TEMPERATURE_TEST_SENSOR_TWO_TYPE,
                                                                         TEMPERATURE_TEST_SENSOR_TWO_NAME,
                                                                         TEMPERATURE_TEST_SENSOR_TWO_VALUE));
-        //todo: Implement a way to use SpringRunner with Mockito functionality.
-        Mockito.when(sensorServiceMock.getSensorOutputList()).thenReturn(sensorOutput);
+
+        given(this.temperatureServiceMock.getSensorOutputList())
+                .willReturn(sensorOutput);
     }
 
     @Test
-    public void testRestAPI_getAllSensors() {
+    public void testRestAPI_getAllSensors() throws JSONException {
         ResponseEntity<String> response =
                 restTemplate.getForEntity(String.format("/%s/sensors/", contextPath), String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        //todo: Implement check of content
+
+        JSONArray jsonResponse = new JSONArray(response.getBody());
+        JSONObject firstObject = jsonResponse.getJSONObject(0);
+        JSONObject secondObject = jsonResponse.getJSONObject(1);
+
+        assertEquals(TEMPERATURE_TEST_SENSOR_ONE_TYPE, firstObject.getString("type"));
+        assertEquals(TEMPERATURE_TEST_SENSOR_ONE_NAME, firstObject.getString("name"));
+        assertEquals(TEMPERATURE_TEST_SENSOR_ONE_VALUE, firstObject.getJSONArray("values").getDouble(0), 0.001);
+
+        assertEquals(TEMPERATURE_TEST_SENSOR_TWO_TYPE, secondObject.getString("type"));
+        assertEquals(TEMPERATURE_TEST_SENSOR_TWO_NAME, secondObject.getString("name"));
+        assertEquals(TEMPERATURE_TEST_SENSOR_TWO_VALUE, secondObject.getJSONArray("values").getDouble(0), 0.001);
     }
 
     @Test
-    public void testRestAPI_getAllSensorForType() {
+    public void testRestAPI_getAllSensorForType() throws JSONException {
         ResponseEntity<String> response =
                 restTemplate.getForEntity(String.format("/%s/sensors/%s", contextPath, TEMPERATURE_TEST_SENSOR_ONE_TYPE), String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        //todo: Implement check of content
 
+        JSONArray jsonResponse = new JSONArray(response.getBody());
+        JSONObject jsonObject = jsonResponse.getJSONObject(0);
+
+        assertEquals(TEMPERATURE_TEST_SENSOR_ONE_NAME, jsonObject.getString("name"));
+        assertEquals(TEMPERATURE_TEST_SENSOR_ONE_TYPE, jsonObject.getString("type"));
+        assertEquals(TEMPERATURE_TEST_SENSOR_ONE_VALUE, jsonObject.getJSONArray("values").getDouble(0), 0.001);
     }
 
     @Test
-    public void testRestAPI_getSensorForTypeAndName() {
+    public void testRestAPI_getSensorForTypeAndName() throws JSONException {
         ResponseEntity<String> response =
                 restTemplate.getForEntity(String.format("/%s/sensors/%s/%s", contextPath, TEMPERATURE_TEST_SENSOR_ONE_TYPE, TEMPERATURE_TEST_SENSOR_ONE_NAME), String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        //todo: Implement check of content
+
+        JSONArray jsonResponse = new JSONArray(response.getBody());
+        JSONObject jsonObject = jsonResponse.getJSONObject(0);
+
+        assertEquals(TEMPERATURE_TEST_SENSOR_ONE_NAME, jsonObject.getString("name"));
+        assertEquals(TEMPERATURE_TEST_SENSOR_ONE_TYPE, jsonObject.getString("type"));
+        assertEquals(TEMPERATURE_TEST_SENSOR_ONE_VALUE, jsonObject.getJSONArray("values").getDouble(0), 0.001);
     }
 
 }
