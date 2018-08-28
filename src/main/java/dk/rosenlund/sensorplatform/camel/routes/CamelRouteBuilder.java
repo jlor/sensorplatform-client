@@ -61,8 +61,6 @@ public class CamelRouteBuilder extends RouteBuilder {
                 .setBody(constant("OK"))
                 .endRest();
 
-        //todo: implement me
-
         rest()
                 .get("/sensors")
                     .produces(JSON_CONTENT_TYPE)
