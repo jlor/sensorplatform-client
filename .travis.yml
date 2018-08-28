@@ -1,10 +1,21 @@
 language: java
-dist: trusty
+sudo: false
+install: true
+
 
 addons:
     sonarcloud:
         organization: "jlor-github"
         token:
               secure: "ibVS2qBGwJ8GnB1nKqoRJRhF5DAT8DsNn6wuiPJTClN4cVnTxTewwZCnTIa/SUJDadEH//6WKvnDrsgemuMH05/vcDbQi0ggg/+RL3Fssob68AWwSJuzTmgu32AFpTsu1FKFFsKD91FlRUgyy0MZJFiac5rq3xyCjsTuWkSXfZ8wdngI+TCQ3Hv0VGPiPTR1dGXkliZ+8dSuof8edlRM1sZqTt7j4+VvRNQ9wyNjegwRB2Fl3A5CwHs+0lMs16GsVHhngTXVeaLqNcIjKSyB5Vb+SWv+zn1PpREEz7/smYe4dfKlTVhIy6hCwVvwFVIwqhqwhqR2dDRUeErHsSdLnKN+n8XvCxFyZsj3P684PAx08z0BfvkudZYYlsEZTojOa9d0OLnF2O0BUNnGtoeHFYKKG6D6QmKDlzZzv12rLlCX69UDWI9wpnT5O8wEu30/B2eE2GnB2No6b0n/gJpl8TEwG4s49tjycHqkcLlFsbkJ6DrY/a1ce2ldrxKtH7qM9x4Gg16KkYL8Tqj0r8ovBxNsGbEq050OKUDCXY2dG8nMFf1a7n9i732z6Qz36znMyH1Mb9EK+DxIVgABfyMsZUKU8Kq19nLqNP3oxN2bx87o7zRSqByjSDf902uk3Z65y8V/8DYGf0uso/pDVLfYfjRGTCvyZ2zjWC3rW9JuG+A="
+
+jdk:
+  - oraclejdk8
+  
 script:
     - mvn clean install sonar:sonar
+
+cache:
+  directories:
+  - '$HOME/.m2/repository'
+  - '$HOME/.sonar/cache'
