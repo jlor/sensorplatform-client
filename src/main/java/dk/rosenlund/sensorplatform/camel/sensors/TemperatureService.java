@@ -13,10 +13,8 @@ public class TemperatureService implements SensorService {
     public List<SensorOutput> getSensorOutputList() {
         List<SensorOutput> sensorMessages = new ArrayList<>();
 
-        W1Master w1master = new W1Master();
-        // 1wire TemperatureSensors
-        List<TemperatureSensor> temperatureSensors = w1master.getDevices(TemperatureSensor.class);
-        if (temperatureSensors.isEmpty()) {
+        List<TemperatureSensor> temperatureSensors = getSensors();
+        if (!temperatureSensors.isEmpty()) {
             temperatureSensors.forEach(s -> sensorMessages.add(
                     new SensorOutput(
                             TemperatureSensor.class.getName(),
@@ -27,5 +25,11 @@ public class TemperatureService implements SensorService {
         }
 
         return sensorMessages;
+    }
+
+    protected List<TemperatureSensor> getSensors() {
+        // 1wire TemperatureSensors
+        W1Master w1Master = new W1Master();
+        return w1Master.getDevices(TemperatureSensor.class);
     }
 }
