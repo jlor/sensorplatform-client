@@ -23,12 +23,13 @@
 
         <skip.unit.test>false</skip.unit.test>
         <skip.integration.test>false</skip.integration.test>
-
-        <jacoco.it.execution.data.file>${project.build.directory}/coverage-reports/jacoco-it.exec</jacoco.it.execution.data.file>
-        <jacoco.ut.execution.data.file>${project.build.directory}/coverage-reports/jacoco-ut.exec</jacoco.ut.execution.data.file>
-        <sonar.jacoco.itReportPath>${jacoco.it.execution.data.file}</sonar.jacoco.itReportPath>
-        <sonar.jacoco.utReportPath>${jacoco.ut.execution.data.file}</sonar.jacoco.utReportPath>
     </properties>
+
+    <scm>
+        <connection>scm:git:git@github.com:jlor/sensorplatform-client.git</connection>
+        <developerConnection>scm:git:git@github.com:jlor/sensorplatform-client.git</developerConnection>
+        <url>https://github.com/jlor/sensorplatform-client</url>
+    </scm>
 
     <dependencyManagement>
         <dependencies>
@@ -228,7 +229,6 @@
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
-                            <destFile>${jacoco.ut.execution.data.file}</destFile>
                             <propertyName>surefireArgLine</propertyName>
                         </configuration>
                     </execution>
@@ -238,10 +238,6 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
-                        <configuration>
-                            <dataFile>${jacoco.ut.execution.data.file}</dataFile>
-                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-                        </configuration>
                     </execution>
                     <!-- Integration test reporting -->
                     <execution>
@@ -260,10 +256,6 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
-                        <configuration>
-                            <dataFile>${jacoco.it.execution.data.file}</dataFile>
-                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
