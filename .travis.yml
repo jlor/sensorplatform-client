@@ -1,0 +1,10 @@
+language: java
+dist: trusty
+
+addons:
+    sonarcloud:
+        organization: "jlor-github"
+        token:
+            secure: SONAR_TOKEN
+script:
+    - mvn clean install sonar:sonar
