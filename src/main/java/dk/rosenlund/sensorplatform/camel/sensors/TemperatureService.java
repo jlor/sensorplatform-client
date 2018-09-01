@@ -4,10 +4,12 @@ import com.pi4j.component.temperature.TemperatureSensor;
 import com.pi4j.io.w1.W1Master;
 import com.pi4j.temperature.TemperatureScale;
 import dk.rosenlund.sensorplatform.model.SensorOutput;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class TemperatureService implements SensorService {
     @Override
     public List<SensorOutput> getSensorOutputList() {
