@@ -1,18 +1,4 @@
-package sh.x00.api.sensors;
-
-import com.pi4j.wiringpi.Gpio;
-import com.pi4j.wiringpi.GpioUtil;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import sh.x00.api.model.SensorOutput;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Alternative;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+package sh.x00.sensorplatform.client.sensors;
 
 /*
 //TODO[jlor]: Refactor me to better support unit-testing and starting outside hardware

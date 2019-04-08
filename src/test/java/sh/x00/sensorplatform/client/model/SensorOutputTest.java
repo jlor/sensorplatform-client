@@ -1,4 +1,4 @@
-package sh.x00.api.model;
+package sh.x00.sensorplatform.client.model;
 
 import org.junit.jupiter.api.Test;
 

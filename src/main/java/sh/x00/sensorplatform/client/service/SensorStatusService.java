@@ -1,7 +1,7 @@
-package sh.x00.api.service;
+package sh.x00.sensorplatform.client.service;
 
-import sh.x00.api.model.SensorOutput;
-import sh.x00.api.sensors.Sensor;
+import sh.x00.sensorplatform.client.model.SensorOutput;
+import sh.x00.sensorplatform.client.sensors.Sensor;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;

@@ -1,4 +1,4 @@
-package sh.x00.api;
+package sh.x00.sensorplatform.client;
 
 import io.quarkus.test.junit.SubstrateTest;
 

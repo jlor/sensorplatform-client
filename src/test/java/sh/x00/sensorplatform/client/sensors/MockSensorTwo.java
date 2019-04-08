@@ -1,9 +1,8 @@
-package sh.x00.api.sensors;
+package sh.x00.sensorplatform.client.sensors;
 
 
-import sh.x00.api.model.SensorOutput;
+import sh.x00.sensorplatform.client.model.SensorOutput;
 
-import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 import java.util.Arrays;

@@ -1,11 +1,11 @@
-package sh.x00.api.sensors;
+package sh.x00.sensorplatform.client.sensors;
 
 import com.pi4j.temperature.TemperatureScale;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sh.x00.api.model.SensorOutput;
+import sh.x00.sensorplatform.client.model.SensorOutput;
 
 import java.util.ArrayList;
 import java.util.List;

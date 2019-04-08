@@ -1,7 +1,7 @@
-package sh.x00.api;
+package sh.x00.sensorplatform.client;
 
-import sh.x00.api.model.SensorOutput;
-import sh.x00.api.service.SensorStatusService;
+import sh.x00.sensorplatform.client.model.SensorOutput;
+import sh.x00.sensorplatform.client.service.SensorStatusService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;

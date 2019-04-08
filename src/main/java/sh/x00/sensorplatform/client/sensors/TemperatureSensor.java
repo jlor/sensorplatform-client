@@ -1,8 +1,8 @@
-package sh.x00.api.sensors;
+package sh.x00.sensorplatform.client.sensors;
 
 import com.pi4j.io.w1.W1Master;
 import com.pi4j.temperature.TemperatureScale;
-import sh.x00.api.model.SensorOutput;
+import sh.x00.sensorplatform.client.model.SensorOutput;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
