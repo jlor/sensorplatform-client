@@ -110,18 +110,33 @@ class SensorOutputTest {
         SensorOutput sensorOutput = new SensorOutput("type", "name", 123d);
         // Act
         boolean equals = sensorOutput.equals(null);
+        boolean sensorOneEqualsString = sensorOutput.equals("not a sensor");
         // Assert
         assertFalse(equals);
+        assertFalse(sensorOneEqualsString);
     }
 
     @Test
     public void testSensorOutput_differentObject() {
         // Arrange
         SensorOutput sensorOutputOne = new SensorOutput("type", "name", 123d);
-        SensorOutput sensorOutputTwo = new SensorOutput("epyt", "eman", 321d);
+        SensorOutput sensorOutputTwo = new SensorOutput("type", "name", 123d);
+        sensorOutputTwo.setTimestamp(sensorOutputOne.getTimestamp() + 1000L);
+        SensorOutput differentName = new SensorOutput("type", "eman", 123d);
+        differentName.setTimestamp(sensorOutputOne.getTimestamp());
+        SensorOutput differentType = new SensorOutput("epyt", "name", 123d);
+        differentType.setTimestamp(sensorOutputOne.getTimestamp());
+        SensorOutput differentValues = new SensorOutput("type", "name", Arrays.asList(123d, 321d));
+        differentValues.setTimestamp(sensorOutputOne.getTimestamp());
         // Act
-        boolean equals = sensorOutputOne.equals(sensorOutputTwo);
+        boolean sensorTimestampDifferent = sensorOutputOne.equals(sensorOutputTwo);
+        boolean sensorTypeDifferent = sensorOutputOne.equals(differentType);
+        boolean sensorNameDifferent = sensorOutputOne.equals(differentName);
+        boolean sensorValuesDifferent = sensorOutputOne.equals(differentValues);
         // Assert
-        assertFalse(equals);
+        assertFalse(sensorTimestampDifferent);
+        assertFalse(sensorTypeDifferent);
+        assertFalse(sensorNameDifferent);
+        assertFalse(sensorValuesDifferent);
     }
 }
