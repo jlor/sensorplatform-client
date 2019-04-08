@@ -9,18 +9,22 @@ import sh.x00.api.model.SensorOutput;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/*
+//TODO[jlor]: Refactor me to better support unit-testing and starting outside hardware
+@Alternative
 @ApplicationScoped
 public class HumiditySensor implements Sensor {
     private static final Logger log = LoggerFactory.getLogger( HumiditySensor.class );
 
     @ConfigProperty(name = "dht22.pin.out")
-    int DHT22_PIN_OUT;
+    Integer DHT22_PIN_OUT;
     @ConfigProperty(name = "dht22.pin.data")
-    int DHT22_PIN_DATA;
+    Integer DHT22_PIN_DATA;
 
     private String sensorType = "DHT22";
     private boolean initialized = false;
@@ -141,3 +145,4 @@ public class HumiditySensor implements Sensor {
     }
 
 }
+*/
