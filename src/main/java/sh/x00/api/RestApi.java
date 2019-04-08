@@ -1,11 +1,9 @@
 package sh.x00.api;
 
 import sh.x00.api.model.SensorOutput;
-import sh.x00.api.sensors.Sensor;
 import sh.x00.api.service.SensorStatusService;
 
 import javax.inject.Inject;
-import javax.json.bind.Jsonb;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

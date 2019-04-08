@@ -93,4 +93,35 @@ class SensorOutputTest {
         // Assert
         assertTrue(equals);
     }
+
+    @Test
+    public void testSensorOutput_sameObject() {
+        // Arrange
+        SensorOutput sensorOutput = new SensorOutput("type", "name", 123d);
+        // Act
+        boolean equals = sensorOutput.equals(sensorOutput);
+        // Assert
+        assertTrue(equals);
+    }
+
+    @Test
+    public void testSensorOutput_nullObject() {
+        // Arrange
+        SensorOutput sensorOutput = new SensorOutput("type", "name", 123d);
+        // Act
+        boolean equals = sensorOutput.equals(null);
+        // Assert
+        assertFalse(equals);
+    }
+
+    @Test
+    public void testSensorOutput_differentObject() {
+        // Arrange
+        SensorOutput sensorOutputOne = new SensorOutput("type", "name", 123d);
+        SensorOutput sensorOutputTwo = new SensorOutput("epyt", "eman", 321d);
+        // Act
+        boolean equals = sensorOutputOne.equals(sensorOutputTwo);
+        // Assert
+        assertFalse(equals);
+    }
 }
